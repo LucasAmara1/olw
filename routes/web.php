@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BeerController;
+use App\Http\Controllers\ExportController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,7 +32,12 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::prefix('beers')->group(function () {
-    Route::get('/', [BeerController::class, 'index'])->name('list-beers');
-    Route::get('/export', [BeerController::class, 'export'])->name('export-beers');
+Route::middleware(['auth', 'verified'])->group(function () {
+    /* /beers */
+    Route::prefix('beers')->group(function () {
+        Route::get('/', [BeerController::class, 'index'])->name('list-beers');
+        Route::get('/export', [BeerController::class, 'export'])->name('export-beers');
+        Route::get('/reports', [ExportController::class, 'index'])->name('list-exports');
+        Route::delete('/reports', [ExportController::class, 'destroy'])->name('delete-export');
+    });
 });
