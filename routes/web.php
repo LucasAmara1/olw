@@ -35,9 +35,10 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'verified'])->group(function () {
     /* /beers */
     Route::prefix('beers')->group(function () {
-        Route::get('/', [BeerController::class, 'index'])->name('list-beers');
-        Route::get('/export', [BeerController::class, 'export'])->name('export-beers');
-        Route::get('/reports', [ExportController::class, 'index'])->name('list-exports');
-        Route::delete('/reports', [ExportController::class, 'destroy'])->name('delete-export');
+        Route::get('/', [BeerController::class, 'index'])->name('beers');
+        Route::post('/export', [BeerController::class, 'export'])->name('beers.export');
+        Route::get('/reports', [ExportController::class, 'index'])->name('reports.index');
+        Route::get('/reports/{idExport}', [ExportController::class, 'show'])->name('reports.show');
+        Route::delete('/reports/{idExport}', [ExportController::class, 'destroy'])->name('reports.destroy');
     });
 });
